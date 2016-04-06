@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Magic Square Verifier</title>
+    <style>
+        
+        html, body {
+            font-family: sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background-color: #3F51B5;
+            margin: 0 -9999rem;
+            padding: 0.25rem 9999rem;
+            font-size: 100%;
+            width: 100%;
+            color: #ffffff;
+            text-align: center;   
+        }
+        
+        #container {
+            margin: 15px;
+        }
+        
+        #square, #result {
+            text-align: center;
+        }
+    </style>
+    <script>
+        window.addEventListener("load", function() {
+            var diag = document.getElementById("diag");
+            var cols = document.getElementById("cols");
+            var rows = document.getElementById("rows");
+            var result = document.getElementById("result");
+            
+            var error = "Not a magic square";
+            
+            var x, y, z;
+            
+            function submitValues() {
+                var grid = [];
+                
+                var values = document.getElementById("squareValues").value;
+                console.log(values);
+                
+                var obtainedValues = values.split(" ");
+                
+                
+                
+                for (var i=0; i<obtainedValues.length; i++) {
+                    
+                    grid.push(parseInt(obtainedValues[i]));
+                }
+                
+                console.log(grid);
+                
+                verifyMagicSquare(grid);
+            }
+           
+            document.getElementById("submit").addEventListener("click", submitValues);
+            
+            function displayError(elem) {
+                elem.innerHTML = elem.id + " failed";
+                result.innerHTML = "Not a magic square";
+            }
+            
+            function verifyDiagonal(array) {
+                console.log(array[x], array[y], array[z]);
+                                
+                var total = 0;
+                
+                total += array[x];
+                total += array[y];
+                total += array[z];
+                
+                console.log("Total: " + total);
+                if(total == 15) {
+                    x += 2
+                    z -= 2;
+                    
+                    if(x <= 2) {
+                        verifyDiagonal(array);
+                    }
+                    else {
+                        console.log("Diagonals passed");
+                        console.log("This is a magic square");
+                        diag.innerHTML = "Diagonals passed! <br>"
+                        result.innerHTML = "This is a magic square!";
+                    }
+                }
+                else {
+                    console.log(error);
+                    diag.innerHTML = error;
+                }
+            }
+            
+            function verifyColumn(array) {
+                console.log(array[x], array[y], array[z]);
+                
+                var total = 0;
+                
+                total += array[x];
+                total += array[y];
+                total += array[z];
+                
+                console.log("Total: " + total);
+                if(total == 15) {
+                    x += 1;
+                    y += 1;
+                    z += 1;
+                    if(array[z] != undefined) {
+                        verifyColumn(array);
+                    }
+                    else {
+                        console.log("Columns passed");
+                        cols.innerHTML = "Columns passed!";
+                        x = 0;
+                        y = 4;
+                        z = 8;
+                        verifyDiagonal(array);
+                    }
+                }
+                else {
+                    console.log(error);
+                    cols.innerHTML = error;
+                }
+            }
+            
+            function verifyRow(array) {
+                console.log(array[x], array[y], array[z]);
+                
+                var total = 0;
+                
+                total += array[x];
+                total += array[y];
+                total += array[z];
+                
+                console.log("Total:" + total);
+                
+                if(total == 15) {
+                    x += 3;
+                    y += 3;
+                    z += 3;
+                    if(array[x] != undefined) {
+                        verifyRow(array);
+                    }
+                    else {
+                        console.log("Rows passed");
+                        rows.innerHTML = "Rows passed!";
+                        x = 0;
+                        y = 3;
+                        z = 6;
+                        verifyColumn(array);
+                    }
+                }
+                else {
+                    displayError(rows);
+                }
+            }
+            
+            function displaySquare(array) {
+                var square = "";
+                
+                for (var i=0; i<array.length; i++) {
+                    
+                    if(i == 2 || i == 5 || i == 8) {
+                        square += array[i] + "<br>";
+                    }
+                    else {
+                        square += array[i] + " ";
+                    }
+                }
+                
+                console.log(square);
+                document.getElementById("square").innerHTML = square;
+            }
+            
+            function verifyMagicSquare(array) {
+                x = 0;
+                y = 1;
+                z = 2;
+                
+                if(array.length < 9) {
+                    console.log("Not enough values");
+                    console.log(array.length);
+                    result.innerHTML = "Not enough values";
+                }
+                else if(array.length > 9) {
+                    console.log("Too many values");
+                    console.log(array.length);
+                    result.innerHTML = "Too many values";
+                }
+                else {
+                    displaySquare(array);
+                    verifyRow(array);
+                }
+            }
+            
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>3x3 Magic Squares</h1>
+    </header>
+    <div id="container">
+    Enter square values: <input type="text" id="squareValues"> <br>
+    
+    <input type="submit" id="submit"> <br> <br>
+    
+    <div id ="square"></div> <br>
+    
+    <div id="rows"></div>
+    <div id="cols"></div>
+    <div id="diag"></div>
+    
+    <h2 id="result"> </h2>
+    </div>
+</body>
+</html>

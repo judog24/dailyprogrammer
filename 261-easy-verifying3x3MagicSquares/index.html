@@ -1,3 +1,9 @@
+<!--
+Solution to Challenge #261 [Easy] from r/dailyprogrammer
+
+Reddit thread: https://www.reddit.com/r/dailyprogrammer/comments/4dccix/20160404_challenge_261_easy_verifying_3x3_magic/
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,6 +37,16 @@
         }
     </style>
     <script>
+    /*
+    Determines if user input is a magic square
+    verifyMagicSquare(array) calls verifyRow(array),
+    a recursive function.  verifyRow(array) calls 
+    verifyColumn(array) if a condition passes.
+    verifyColumn(array) calls verifyDiagonal(array).
+    There is probably a more efficient way of completing
+    this challenge, but this code works, assuming the user 
+    provides clean input.
+    */
         window.addEventListener("load", function() {
             var diag = document.getElementById("diag");
             var cols = document.getElementById("cols");
@@ -208,17 +224,18 @@
         <h1>3x3 Magic Squares</h1>
     </header>
     <div id="container">
-    Enter square values: <input type="text" id="squareValues"> <br>
+        Enter square values: <input type="text" id="squareValues"> <br>
+        Ex: 1 2 3 4 5 6 7 8 9 <br>
     
-    <input type="submit" id="submit"> <br> <br>
+        <input type="submit" id="submit"> <br> <br>
     
-    <div id ="square"></div> <br>
+        <div id ="square"></div> <br>
     
-    <div id="rows"></div>
-    <div id="cols"></div>
-    <div id="diag"></div>
+        <div id="rows"></div>
+        <div id="cols"></div>
+        <div id="diag"></div>
     
-    <h2 id="result"> </h2>
+        <h2 id="result"> </h2>
     </div>
 </body>
 </html>
